@@ -2,6 +2,7 @@ package nu.educom.MI6;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.*;
 
 public class Main {
 
@@ -13,21 +14,23 @@ public class Main {
       System.out.println("Enter Servicenumber: ");
       String userInput;
       String userSentence;
+      JFrame frame = new JFrame("Title");
       try{
-        Scanner scanner = new Scanner(System.in);
-        userInput = Integer.toString(scanner.nextInt());
+        userInput = JOptionPane.showInputDialog(frame, "Enter your agent number");
+        // cancel -> quit system
+        if (userInput == null) {System.exit(0);}
       } catch (Exception e) {
-        System.out.println("Only numbers are allowed.");
+        JOptionPane.showMessageDialog(frame, "Only numbers are allowed.");
         continue;
       }
 
       int lengInput = userInput.length();
       if (lengInput > 3) {
-        System.out.println(String.format("Agent number %s is wrong", userInput));
+        JOptionPane.showMessageDialog(frame,String.format("Agent number %s is wrong", userInput));
         continue;
       }
       if (Integer.parseInt(userInput) < 1 || Integer.parseInt(userInput) > 956) {
-        System.out.println(String.format("Agent number %s is not in defined range.", userInput));
+        JOptionPane.showMessageDialog(frame, String.format("Agent number %s is not in defined range.", userInput));
         continue;
       }
 
@@ -37,18 +40,18 @@ public class Main {
       }
 
       if (blacklist.contains(userInput)) {
-        System.out.println(String.format("Agent number %s is blacklisted.", userInput));
+        JOptionPane.showMessageDialog(frame, "ACCESS DENIED");
         continue;
       }
 
-      System.out.println("What is the secret sentence?");
-      Scanner scanner = new Scanner(System.in);
-      userSentence = scanner.nextLine();
+      userSentence = JOptionPane.showInputDialog(frame,"What is the secret sentence?");
+      // cancel -> quit system
+      if (userSentence == null) {System.exit(0);}
 
       if (userSentence.equals(CodeSentence)){
-        System.out.println(String.format("Logging agent number %s in", userInput));
+        JOptionPane.showMessageDialog(frame,String.format("Logging agent number %s in", userInput));
       } else {
-        System.out.println(String.format("Invalid secret code blacklisting agent number %s", userInput));
+        JOptionPane.showMessageDialog(frame, "ACCESS DENIED");
         blacklist.add(userInput);
         continue;
       }
