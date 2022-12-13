@@ -14,7 +14,7 @@ public class Model {
     public boolean validateLogin(String agentNumber, String sentence){
         try{
             Integer.parseInt(agentNumber);
-            if (agentNumber == null) {System.exit(0);}
+            //if (agentNumber == null) {System.exit(0);}
         } catch (Exception e) {
             errors.put("Validation", "Only numbers are allowed.");
             return false;
@@ -40,7 +40,7 @@ public class Model {
             return false;
         }
         
-        if (sentence == null) {System.exit(0);}
+        //if (sentence == null) {System.exit(0);}
 
         if (!sentence.equals(CodeSentence)){
             errors.put("Validation", "ACCESS DENIED");

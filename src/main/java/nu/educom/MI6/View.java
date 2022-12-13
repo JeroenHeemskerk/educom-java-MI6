@@ -24,9 +24,7 @@ public class View {
     public View() {
         // make frame with the settings
         frame = new JFrame("Login");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(200, 300);
-        frame.setVisible(true);
+
     }
 
     public void setPresenterInterface(IPresenter presenter) {
@@ -44,6 +42,7 @@ public class View {
     public void displayLogin(){
         frame.getContentPane().removeAll();
         frame.repaint();
+        frame.revalidate();
 
         // making labels and panels
         agentNumberLabel = new JLabel("Agent number:", JLabel.CENTER);
@@ -58,8 +57,8 @@ public class View {
 
         // setting up panel2
         BoxLayout boxLayout2 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
-        panel1.setLayout(boxLayout2);
-        panel1.setBorder(new EmptyBorder(new Insets(45, 75, 45, 75)));
+        panel2.setLayout(boxLayout2);
+        panel2.setBorder(new EmptyBorder(new Insets(45, 75, 45, 75)));
 
         // add button and textfield
         agentNumberTextField = new JFormattedTextField();
@@ -78,11 +77,16 @@ public class View {
         frame.setLayout(new GridLayout(2, 1));
         frame.add(panel1);
         frame.add(panel2);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     public void displayMsg(String errorMsg){
         frame.getContentPane().removeAll();
         frame.repaint();
+        frame.revalidate();
 
         errorLabel = new JLabel(errorMsg, JLabel.CENTER);
         errorPanel = new JPanel();
@@ -108,6 +112,10 @@ public class View {
         frame.setLayout(new GridLayout(2, 1));
         frame.add(errorPanel);
         frame.add(panel2);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
 
     }
 
