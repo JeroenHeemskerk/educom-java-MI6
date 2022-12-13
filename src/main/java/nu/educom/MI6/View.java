@@ -127,7 +127,7 @@ public class View {
         displayMsg(msg);
     }
 
-    public String getAgentnumber(){
+    public String getAgentNumber(){
         return agentNumberTextField.getText();
     }
 

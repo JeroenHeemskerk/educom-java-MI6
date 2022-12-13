@@ -14,10 +14,10 @@ public class Presenter implements IPresenter{
     }
 
     public void triggerLogin() {
-        agentNumber = this.view.getAgentnumber();
+        agentNumber = this.view.getAgentNumber();
         sentence = this.view.getSentence();
         if(this.model.validateLogin(agentNumber, sentence)) {
-            view.displayLoginSuccess("ACCES GRANTED");
+            view.displayLoginSuccess("ACCESS GRANTED");
         } else {
             view.displayLoginError(model.getErrors().get("Validation"));
         }
