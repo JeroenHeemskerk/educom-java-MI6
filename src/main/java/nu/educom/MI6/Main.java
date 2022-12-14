@@ -4,6 +4,9 @@ package nu.educom.MI6;
 // import java.util.Scanner;
 // import javax.swing.*;
 
+import java.sql.ResultSet;
+import java.util.List;
+
 public class Main {
 
   // private static String CodeSentence = "For ThE Royal QUEEN";
@@ -13,6 +16,9 @@ public class Main {
     View view = new View();
     Presenter presenter = new Presenter(view);
     presenter.displayLogin();
+    Crud crud = new Crud();
+    Agent test = crud.readOneRow("SELECT * FROM agents WHERE agent_number = ?", "002");
+    test.read();
     // while (true) {
     //   System.out.println("Enter Servicenumber: ");
     //   String userInput;
