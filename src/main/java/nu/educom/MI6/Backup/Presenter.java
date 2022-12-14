@@ -1,4 +1,4 @@
-package nu.educom.MI6;
+package nu.educom.MI6.Backup;
 
 public class Presenter implements IPresenter{
     private View view;
@@ -9,7 +9,7 @@ public class Presenter implements IPresenter{
 
     public Presenter(View view, Crud crud) {
         this.crud = crud;
-        this.model = new Model(crud, view);
+        this.model = new Model(crud, this);
         this.view = view;
         this.view.setPresenterInterface(this);
         this.view.setLoginHandler();
@@ -19,25 +19,12 @@ public class Presenter implements IPresenter{
     public void triggerLogin() {
         agentNumber = this.view.getAgentNumber();
         sentence = this.view.getSentence();
-        model.validateAgentNumber(agentNumber);
-//        } else {
-//            view.displayLoginError(model.getErrors().get("Validation"));
-//        }
-        try {
-            var agent_number = model.getAgent().getAgentNumber();
-            //System.out.println("testABC");
-            if (model.authenticateAgent(agent_number)) {
-                System.out.println("test");
-                view.displayLoginSuccess(String.format("Login Successful %s", agent_number));
-            } else {
-                System.out.println("test123");
-                view.displayLoginError(model.getErrors().get("Validation"));
-
-            }
-            //model.setAgent(null);
-        } catch (Exception e) {
+        if(this.model.validateLogin(agentNumber, sentence)) {
+            view.displayLoginSuccess("ACCESS GRANTED");
+        } else {
             view.displayLoginError(model.getErrors().get("Validation"));
         }
+
     }
 
     public void displayLogin() {
@@ -48,5 +35,9 @@ public class Presenter implements IPresenter{
         this.view.displayLogin();
     }
 
+//    public void setIntervalValue(int secs) {
+//        view.setIntervalValue(secs);
+//        view.startTimer();
+//    }
     
 }

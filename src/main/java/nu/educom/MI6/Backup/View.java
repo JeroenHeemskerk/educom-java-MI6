@@ -1,4 +1,4 @@
-package nu.educom.MI6;
+package nu.educom.MI6.Backup;
 
 import java.awt.*;
 import javax.swing.*;
@@ -24,11 +24,53 @@ public class View {
     private JButton loginButton;
     private JButton backButton;
 
+//    private int interval = 0;
+//    private Timer timer = new Timer();
+//
+//    public void startTimer() {
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            public void run() {
+//                timerTick();
+//            }
+//        }, 1000, 1000);
+//    }
+//
+//    private void timerTick() {
+////        System.out.println(interval);
+//        interval = setInterval();
+//        printTime();
+//    }
+//
+//    private int setInterval() {
+//        if (interval <= 1) {
+//            timer.cancel();
+//
+//        }
+//
+//        return --interval;
+//    }
+//    public void printTime() {
+//        String time = formatTime();
+//        clockLabel.setText(time);
+//    }
+//
+//    private String formatTime() {
+//        int seconds = interval;
+//        int minutes = 0;
+//        while(seconds > 60) {
+//            seconds -= 60;
+//            minutes++;
+//        }
+//
+//        return Integer.toString(minutes) + ":" + Integer.toString(seconds);
+//    }
+
 
 
     public View() {
         // make frame with the settings
         frame = new JFrame("Login");
+
     }
 
     public void setPresenterInterface(IPresenter presenter) {
@@ -53,7 +95,7 @@ public class View {
         sentenceLabel = new JLabel("Secret sentence:", JLabel.CENTER);
         panel1 = new JPanel();
         panel2 = new JPanel();
-//        panel3 = new JPanel();
+        panel3 = new JPanel();
 
         // setting up panel1
         BoxLayout boxLayout1 = new BoxLayout(panel1, BoxLayout.Y_AXIS);
@@ -66,9 +108,9 @@ public class View {
         panel2.setBorder(new EmptyBorder(new Insets(45, 75, 45, 75)));
 
         // setting up panel3
-//        BoxLayout boxLayout3 = new BoxLayout(panel3, BoxLayout.Y_AXIS);
-//        panel3.setLayout(boxLayout3);
-//        panel3.setBorder(new EmptyBorder(new Insets(45, 75, 45, 75)));
+        BoxLayout boxLayout3 = new BoxLayout(panel3, BoxLayout.Y_AXIS);
+        panel3.setLayout(boxLayout3);
+        panel3.setBorder(new EmptyBorder(new Insets(45, 75, 45, 75)));
 
         // add button and textfield
         agentNumberTextField = new JFormattedTextField();
@@ -147,4 +189,7 @@ public class View {
         return sentenceTextField.getText();
     }
 
+//    public void setIntervalValue(int secs) {
+//        interval = secs;
+//    }
 }

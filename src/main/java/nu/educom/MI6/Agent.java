@@ -5,27 +5,50 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 public class Agent {
 
-    private int id;
-    private String agentNumber;
-    private boolean active;
-    private Date licence_to_kill;
+    private int id = 0;
+    private String agentNumber = null;
+    private boolean active = false;
+    private Date licence_to_kill = null;
+    private String personal_sentence = null;
 
 
-    public Agent(ResultSet set) {
-        try {
-            id = set.getInt("id");
-            agentNumber = set.getString("agent_number");
-            active = set.getBoolean("active");
-            licence_to_kill = set.getDate("licence_to_kill");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    public int getId() {
+        return id;
     }
 
-    public void read() {
-        System.out.println(String.format("id: %d", id));
-        System.out.println(String.format("agentNumber: %s", agentNumber));
-        System.out.println(String.format("active: %s", active));
-        System.out.println(String.format("license_to_kill: %s", licence_to_kill));
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getAgentNumber() {
+        return agentNumber;
+    }
+
+    public void setAgentNumber(String agentNumber) {
+        this.agentNumber = agentNumber;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getLicence_to_kill() {
+        return licence_to_kill;
+    }
+
+    public void setLicence_to_kill(Date licence_to_kill) {
+        this.licence_to_kill = licence_to_kill;
+    }
+
+    public String getPersonal_sentence() {
+        return personal_sentence;
+    }
+
+    public void setPersonal_sentence(String personal_sentence) {
+        this.personal_sentence = personal_sentence;
     }
 }
