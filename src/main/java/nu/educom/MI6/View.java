@@ -3,6 +3,8 @@ package nu.educom.MI6;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +25,11 @@ public class View {
     private JFormattedTextField sentenceTextField;
     private JButton loginButton;
     private JButton backButton;
-
+    private JLabel loginLabel;
+    private JPanel loginPanel;
+    private JLabel licenseLabel;
+    private JPanel attemptsPanel;
+    private JTable table;
 
 
     public View() {
@@ -131,10 +137,74 @@ public class View {
 
     }
 
+    public void displayLoginMsg(String Msg, String license_to_kill, List<LoginAttempt> loginAttempts){
+        frame.getContentPane().removeAll();
+        frame.repaint();
+        frame.revalidate();
+
+        loginLabel = new JLabel(Msg, JLabel.CENTER);
+        licenseLabel = new JLabel(license_to_kill, JLabel.CENTER);
+        loginPanel = new JPanel();
+        attemptsPanel = new JPanel();
+        panel2 = new JPanel();
+
+        backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(backHandler);
+
+        // configure panel2
+        BoxLayout boxlayout2 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
+        panel2.setLayout(boxlayout2);
+        panel2.setBorder(new EmptyBorder(new Insets(5, 70, 5, 70)));
+
+
+        // configure errPanel
+        BoxLayout boxlayout = new BoxLayout(loginPanel, BoxLayout.Y_AXIS);
+        loginPanel.setLayout(boxlayout);
+        loginPanel.setBorder(new EmptyBorder(new Insets(5, 70, 5, 70)));
+
+        // set up attempts table
+        table = new JTable();
+
+        DefaultTableModel model = new DefaultTableModel();
+        table.setModel(model);
+
+        String[] column = {"Login Attempt Date",
+                "Login Success"};
+        String[] data = {};
+        for (LoginAttempt s: loginAttempts) {
+            Object[] o = new Object[2];
+            o[0] = s.getDate();
+            o[1] = s.isLogin_success();
+            model.addRow(o);
+        }
+        model.setColumnIdentifiers(column);
+
+
+
+        loginPanel.add(loginLabel);
+//        loginPanel.add(licenseLabel);
+        panel2.add(backButton);
+
+        frame.setLayout(new GridLayout(4, 1));
+        frame.add(loginPanel);
+        frame.add(licenseLabel);
+        frame.add(table);
+        frame.add(panel2);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
+    }
+
     public void displayLoginError(String errorMsg) {
         displayMsg(errorMsg);
     }
 
+//    public void displayLoginSuccess(String msg, String license_to_kill, List<LoginAttempt> loginAttempts) {
+//        displayLoginMsg(msg, license_to_kill, loginAttempts);
+//    }
     public void displayLoginSuccess(String msg) {
         displayMsg(msg);
     }

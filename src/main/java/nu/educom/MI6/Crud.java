@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 public class Crud {
@@ -95,7 +94,7 @@ public class Crud {
 
         query                   = "SELECT * FROM login_attempts WHERE agent_number= ?";
         if (lastSuccess > 0) {  // ^ SELECT ALL if there is no lastSuccess, otherwise v
-            query               = String.format("SELECT * FROM login_attempts WHERE agent_number= ? AND id >= %s", lastSuccess);
+            query               = String.format("SELECT * FROM login_attempts WHERE agent_number= ? AND id > %s", lastSuccess);
         }
 
         ps                      = conn.prepareStatement(query);
@@ -106,20 +105,15 @@ public class Crud {
         List<LoginAttempt> loginAttempts = new ArrayList<LoginAttempt>();
 
         while (rs.next()) {
-            System.out.println("testasbs");
             check = true;
             var la = new LoginAttempt();
             la.setId(rs.getInt("id"));
-            System.out.println("test1");
             la.setAgent_number(rs.getString("agent_number"));
-            System.out.println("test2");
-            la.setDate(LocalDateTime.parse(rs.getString("time_login"), dtf));
-            System.out.println("test3");
             la.setLogin_success(rs.getBoolean("login_success"));
+            la.setDate(LocalDateTime.parse((rs.getTimestamp("time_login").toLocalDateTime().format(dtf)), dtf));
+
             loginAttempts.add(la);
-            System.out.println("test4");
         }
-        System.out.println("testtothier");
         conn.close();
 
         // If there are no records, return null
