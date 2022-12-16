@@ -28,7 +28,6 @@ public class Model {
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
     }
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     public Model(Crud crud, View view) {
         this.crud = crud;
@@ -73,7 +72,7 @@ public class Model {
 
     public Boolean authenticateAgent(String agentNumber) throws SQLException {
 //        var check2 = 0;
-        errors.clear();
+//        errors.clear();
         agent = crud.readOneAgentRow(agentNumber);
         if (agent==null){
             errors.put("Validation", "Access Denied");

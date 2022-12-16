@@ -4,9 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.JScrollPane;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.time.LocalDateTime;
+
+import static java.lang.String.valueOf;
 
 public class View {
     private IPresenter presenter;
@@ -30,6 +38,8 @@ public class View {
     private JLabel licenseLabel;
     private JPanel attemptsPanel;
     private JTable table;
+
+    private DateTimeFormatter dtf   = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
 
     public View() {
@@ -145,7 +155,6 @@ public class View {
         loginLabel = new JLabel(Msg, JLabel.CENTER);
         licenseLabel = new JLabel(license_to_kill, JLabel.CENTER);
         loginPanel = new JPanel();
-        attemptsPanel = new JPanel();
         panel2 = new JPanel();
 
         backButton = new JButton("Back");
@@ -158,37 +167,40 @@ public class View {
         panel2.setBorder(new EmptyBorder(new Insets(5, 70, 5, 70)));
 
 
-        // configure errPanel
+        // configure loginPanel
         BoxLayout boxlayout = new BoxLayout(loginPanel, BoxLayout.Y_AXIS);
         loginPanel.setLayout(boxlayout);
         loginPanel.setBorder(new EmptyBorder(new Insets(5, 70, 5, 70)));
 
+
         // set up attempts table
-        table = new JTable();
+        List<String> columns = new ArrayList<String>();
+        List<String[]> values = new ArrayList<String[]>();
 
-        DefaultTableModel model = new DefaultTableModel();
-        table.setModel(model);
+        columns.add("Login Attempt Date");
+        columns.add("Login Success");
 
-        String[] column = {"Login Attempt Date",
-                "Login Success"};
-        String[] data = {};
-        for (LoginAttempt s: loginAttempts) {
-            Object[] o = new Object[2];
-            o[0] = s.getDate();
-            o[1] = s.isLogin_success();
-            model.addRow(o);
+        // format date 23/11/2022
+        if (loginAttempts!=null) {
+            for (LoginAttempt s : loginAttempts) {
+                values.add(new String[]{dtf.format(s.getDate()).toString(), valueOf(s.isLogin_success())});
+            }
         }
-        model.setColumnIdentifiers(column);
 
+        values.add(new String[] {dtf.format(LocalDateTime.now()).toString(), "true"});
+
+        TableModel model = new DefaultTableModel(values.toArray(new Object[][]{}), columns.toArray());
+
+        table = new JTable(model);
 
 
         loginPanel.add(loginLabel);
-//        loginPanel.add(licenseLabel);
         panel2.add(backButton);
 
-        frame.setLayout(new GridLayout(4, 1));
+        frame.setLayout(new GridLayout(5, 1));
         frame.add(loginPanel);
         frame.add(licenseLabel);
+        frame.add(table.getTableHeader());
         frame.add(table);
         frame.add(panel2);
 
@@ -202,11 +214,8 @@ public class View {
         displayMsg(errorMsg);
     }
 
-//    public void displayLoginSuccess(String msg, String license_to_kill, List<LoginAttempt> loginAttempts) {
-//        displayLoginMsg(msg, license_to_kill, loginAttempts);
-//    }
-    public void displayLoginSuccess(String msg) {
-        displayMsg(msg);
+    public void displayLoginSuccess(String msg, String license_to_kill, List<LoginAttempt> loginAttempts) {
+        displayLoginMsg(msg, license_to_kill, loginAttempts);
     }
 
     public String getAgentNumber(){

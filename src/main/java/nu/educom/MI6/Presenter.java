@@ -1,6 +1,8 @@
 package nu.educom.MI6;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 
 public class Presenter implements IPresenter{
     private View view;
@@ -8,6 +10,8 @@ public class Presenter implements IPresenter{
     private Crud crud;
     private String agentNumber;
     private String sentence;
+
+    private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
     public Presenter(View view, Crud crud) {
         this.crud = crud;
@@ -19,31 +23,24 @@ public class Presenter implements IPresenter{
     }
 
     public void triggerLogin() {
-        //this.model = new Model(crud, view); misschien
         agentNumber = this.view.getAgentNumber();
         sentence = this.view.getSentence();
         model.validateAgentNumber(agentNumber);
 
-        // Ik moet de errors legen.
-//        } else {
-//            view.displayLoginError(model.getErrors().get("Validation"));
-//        }
         try {
             var agent_number = model.getAgent().getAgentNumber();
-//            System.out.println(agent_number);
             if (model.authenticateAgent(agent_number)) {
-                view.displayLoginSuccess(String.format("Login Successful. Welcome agent %s.", agent_number));
-//                var license_to_kill = "No license to kill";
-//                if (model.getAgent().getLicence_to_kill()!=null && LocalDate.now().isBefore(model.getAgent().getLicence_to_kill().toLocalDate())){
-//                    license_to_kill = String.format("Your license to kill expires on %s.", model.getAgent().getLicence_to_kill());
-//                }
-//                view.displayLoginSuccess(String.format("Login Successful. Welcome agent %s.", agent_number), license_to_kill, model.getLoginAttempts());
+                var license_to_kill = "No license to kill";
+                if (model.getAgent().getLicence_to_kill()!=null && LocalDate.now().isBefore(model.getAgent().getLicence_to_kill().toLocalDate())){
+                    license_to_kill = String.format("Your license to kill expires on %s.", df.format(model.getAgent().getLicence_to_kill()));
+                }
+                view.displayLoginSuccess(String.format("Login Successful. Welcome agent %s.", agent_number), license_to_kill, model.getLoginAttempts());
             } else {
                 view.displayLoginError(model.getErrors().get("Validation"));
             }
-            System.out.println(model.getErrors());
-            //model.setAgent(null);
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            view.displayLoginError(model.getErrors().get("Validation"));
+        } catch (NullPointerException e) {
             view.displayLoginError(model.getErrors().get("Validation"));
         }
     }
