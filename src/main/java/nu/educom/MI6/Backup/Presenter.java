@@ -28,11 +28,11 @@ public class Presenter implements IPresenter{
     }
 
     public void displayLogin() {
-        this.view.displayLogin();
+        view.displayLogin();
     }
 
     public void triggerBack() {
-        this.view.displayLogin();
+        view.displayLogin();
     }
 
 //    public void setIntervalValue(int secs) {

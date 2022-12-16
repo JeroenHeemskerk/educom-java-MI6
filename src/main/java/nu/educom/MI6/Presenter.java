@@ -11,14 +11,15 @@ public class Presenter implements IPresenter{
 
     public Presenter(View view, Crud crud) {
         this.crud = crud;
-        this.model = new Model(crud, view);
         this.view = view;
+        this.model = new Model(crud, view);
         this.view.setPresenterInterface(this);
         this.view.setLoginHandler();
         this.view.setBackHandler();
     }
 
     public void triggerLogin() {
+        //this.model = new Model(crud, view); misschien
         agentNumber = this.view.getAgentNumber();
         sentence = this.view.getSentence();
         model.validateAgentNumber(agentNumber);
@@ -29,7 +30,7 @@ public class Presenter implements IPresenter{
 //        }
         try {
             var agent_number = model.getAgent().getAgentNumber();
-            System.out.println(agent_number);
+//            System.out.println(agent_number);
             if (model.authenticateAgent(agent_number)) {
                 view.displayLoginSuccess(String.format("Login Successful. Welcome agent %s.", agent_number));
 //                var license_to_kill = "No license to kill";

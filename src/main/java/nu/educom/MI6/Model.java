@@ -11,21 +11,24 @@ public class Model {
     private static ArrayList<String> blacklist = new ArrayList<String>();
 
     private List<LoginAttempt>      loginAttempts   = new ArrayList<LoginAttempt>();
+
+
+
     private Map<String, String> errors = new HashMap<String, String>();
     private Crud crud;
     private Agent agent;
     private View view;
     private int result;
 
-    private IPresenter presenter;
+    private  IPresenter presenter;
 
     public Map<String, String> getErrors() {
         return errors;
     }
-
+    public void setErrors(Map<String, String> errors) {
+        this.errors = errors;
+    }
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
-    public Timer cdt = null;
 
     public Model(Crud crud, View view) {
         this.crud = crud;
@@ -34,6 +37,7 @@ public class Model {
 
     public void validateAgentNumber(String agentNumber){
         boolean check = true;
+        errors.clear();
         try{
             Integer.parseInt(agentNumber);
             //if (agentNumber == null) {System.exit(0);}
@@ -68,18 +72,27 @@ public class Model {
     }
 
     public Boolean authenticateAgent(String agentNumber) throws SQLException {
+//        var check2 = 0;
+        errors.clear();
         agent = crud.readOneAgentRow(agentNumber);
         if (agent==null){
             errors.put("Validation", "Access Denied");
+//            check2 += 1;
             return false;
         }
         this.loginAttempts = crud.getLastLoginAttempts(agent.getAgentNumber());
         if (!agent.getPersonal_sentence().equals(view.getSentence())) {
             errors.put("Validation",String.format("Access Denied %s", agent.getAgentNumber()));
+//            check2 += 1;
         }
-        if (!agent.isActive()==true) {errors.put("Validation",String.format("Access Denied, you are inactive %s", agent.getAgentNumber()));}
-        if (!(checkTimeOut()==0)) {errors.put("Validation", String.format("You are time out for %s more seconds %s", result ,agent.getAgentNumber()));}
+        if (!agent.isActive()==true) {errors.put("Validation",String.format("Access Denied, you are inactive %s", agent.getAgentNumber()));
+//            check2 += 1;
+//            return false;
+        }
+        if (!(checkTimeOut()==0)) {errors.put("Validation", String.format("You are time out for %s more seconds %s", result ,agent.getAgentNumber()));
+            return false;}
         if (checkTimeOut()==0) {crud.createLoginRow(agent.getAgentNumber(), errors.isEmpty());}
+//        return (check2==0);
         return errors.isEmpty();
 
     }
